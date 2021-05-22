@@ -3,7 +3,11 @@ import axios from "axios";
 
 class MovieDetailsPage extends Component {
   state = {
-    movies: [],
+    poster: null,
+    id: null,
+    genre: null,
+    about: null,
+    title: null,
   };
 
   componentDidMount = () => {
@@ -22,13 +26,12 @@ class MovieDetailsPage extends Component {
   };
 
   render() {
-    const { movies } = this.state;
+    const { poster, id, genre, about, title } = this.state;
     console.log(movies);
     return (
       <div>
-        {movies.map(({ original_title, poster_path, release_date, title }) => (
-          <h1>{original_title}</h1>
-        ))}
+        <img src={poster} alt={title} />
+        <h2>{}</h2>
         <h1>This movie</h1>
       </div>
     );
