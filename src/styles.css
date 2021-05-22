@@ -1,0 +1,7 @@
+.NavLink {
+    color: black;
+}
+
+.NavLink--active {
+    color: red;
+}
