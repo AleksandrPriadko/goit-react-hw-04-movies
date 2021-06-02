@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { Route, Switch, NavLink } from "react-router-dom";
+import "./App.css";
+import HomePage from "./views/HomePage";
+import MoviesPage from "./views/MoviesPage";
+import MovieDetailsPage from "./views/MovieDetailsPage";
+import NotFoundView from "./views/NotFoundView";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {};
+
+  render() {
+    return (
+      <>
+        <ul>
+          <li>
+            <NavLink
+              exact
+              to="/"
+              className="NavLink"
+              activeClassName="NavLink-active"
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/movies"
+              className="NavLink"
+              activeClassName="NavLink-active"
+            >
+              Movies
+            </NavLink>
+          </li>
+        </ul>
+
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route exact path="/movies" component={MoviesPage} />
+          <Route path="/movies/:movieId" component={MovieDetailsPage} />
+          <Route component={NotFoundView} />
+        </Switch>
+      </>
+    );
+  }
 }
 
 export default App;
