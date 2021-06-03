@@ -7,7 +7,7 @@ class MovieDetailsPage extends Component {
     title: null,
     score: null,
     overview: null,
-    genres: null,
+    genres: [],
   };
 
   componentDidMount = () => {
@@ -20,27 +20,26 @@ class MovieDetailsPage extends Component {
         poster: `https://image.tmdb.org/t/p/original${data.poster_path}`,
         title: data.title,
         overview: data.overview,
-        genres: [...data.genres],
+        genres: data.genres.map((genre) => genre.name),
       });
     });
   };
 
   render() {
     const { poster, title, overview, genres } = this.state;
-    //const gen = genres.forEach((genre) => genre.name);
-    console.log(genres);
+
     return (
       <div>
         <button>Go back</button>
         <div>
-          <img src={poster} alt={title} />
+          <img className="pictures" src={poster} alt={title} />
           <div>
             <h1>{title}</h1>
             <p>User Score:</p>
             <h2>Overview</h2>
             <p>{overview}</p>
             <h2>Genres</h2>
-            <p></p>
+            <p>{genres.join(", ")}</p>
           </div>
         </div>
       </div>
