@@ -4,7 +4,7 @@ import "./App.css";
 import HomePage from "./views/HomePage";
 import MoviesPage from "./views/MoviesPage";
 import MovieDetailsPage from "./views/MovieDetailsPage";
-import NotFoundView from "./views/NotFoundView";
+import NotFoundView from "./components/NotFoundView";
 
 class App extends Component {
   state = {};
