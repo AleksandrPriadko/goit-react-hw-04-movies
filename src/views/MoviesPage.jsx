@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import MoviesForm from "../components/MoviesForm";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class MoviesPage extends Component {
   state = {
@@ -13,6 +13,14 @@ class MoviesPage extends Component {
     console.log(query);
     this.setState({ query: query });
     this.handleRequest(query);
+    this.onMoviesSearch(query);
+  };
+
+  onMoviesSearch = (query) => {
+    this.props.history.push({
+      pathname: this.props.location.pathname,
+      search: `?query=${query}`,
+    });
   };
 
   handleRequest = (query) => {
@@ -27,16 +35,26 @@ class MoviesPage extends Component {
   };
 
   render() {
-    const { results } = this.state;
-    console.log(results);
+    const { results, query } = this.state;
+    const { location } = this.props;
+    console.log(this.props.location);
     //this.handleRequest();
     return (
       <>
-        <MoviesForm onSubmit={this.formSubmitHandler} />
+        <MoviesForm onSubmit={this.formSubmitHandler} query={query} />
         <ul>
           {results.map(({ id, title }) => (
             <li key={id}>
-              <Link to={`${this.props.match.url}/${id}`}>{title}</Link>
+              <Link
+                to={{
+                  pathname: `${this.props.match.url}/${id}`,
+                  state: {
+                    from: location,
+                  },
+                }}
+              >
+                {title}
+              </Link>
             </li>
           ))}
         </ul>
@@ -45,4 +63,4 @@ class MoviesPage extends Component {
   }
 }
 
-export default MoviesPage;
+export default withRouter(MoviesPage);

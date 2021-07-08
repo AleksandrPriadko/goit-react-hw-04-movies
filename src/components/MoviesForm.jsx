@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+//import queryString from "query-string";
 
 class MoviesForm extends Component {
   state = {
@@ -18,6 +19,8 @@ class MoviesForm extends Component {
   reset = () => {
     this.setState({ name: "" });
   };
+
+  //const queryParams = queryString.parse(props.location.search);
 
   render() {
     const { name } = this.state;

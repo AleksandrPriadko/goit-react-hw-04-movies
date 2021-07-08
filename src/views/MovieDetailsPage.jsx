@@ -3,6 +3,7 @@ import axios from "axios";
 import { NavLink, Route, Switch } from "react-router-dom";
 import CastDetails from "../components/CastDetails";
 import ReviewsDetails from "../components/ReviewsDetails";
+import queryString from "query-string";
 
 class MovieDetailsPage extends Component {
   state = {
@@ -27,6 +28,16 @@ class MovieDetailsPage extends Component {
       });
     });
   };
+  handleGoBack = () => {
+    const { location, history } = this.props;
+    console.log(location);
+
+    history.push(location.state.from);
+
+    const queryParams = queryString.parse(location.search);
+    history.push(queryParams);
+    console.log(queryParams);
+  };
 
   render() {
     const { poster, title, overview, genres, score } = this.state;
@@ -34,7 +45,9 @@ class MovieDetailsPage extends Component {
     const { url } = this.props.match;
     return (
       <div>
-        <button>Go back</button>
+        <button type="button" onClick={this.handleGoBack}>
+          Go back
+        </button>
         <div>
           <img className="pictures" src={poster} alt={title} />
           <div>

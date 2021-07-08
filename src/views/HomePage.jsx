@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class HomePage extends Component {
   state = {
@@ -19,14 +19,21 @@ class HomePage extends Component {
 
   render() {
     const { trendingMovies } = this.state;
-    //const { url } = this.props.match;
+    const { location } = this.props;
     return (
       <>
         <h1>Trending today</h1>
         <ul>
           {trendingMovies.map(({ id, title }) => (
             <li key={id}>
-              <Link to={`/movies/${id}`}>{title}</Link>
+              <Link
+                to={{
+                  pathname: `/movies/${id}`,
+                  state: { from: location },
+                }}
+              >
+                {title}
+              </Link>
             </li>
           ))}
         </ul>
@@ -35,4 +42,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default withRouter(HomePage);
