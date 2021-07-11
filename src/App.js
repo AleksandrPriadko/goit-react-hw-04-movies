@@ -12,23 +12,14 @@ class App extends Component {
   render() {
     return (
       <>
-        <ul>
-          <li>
-            <NavLink
-              exact
-              to="/"
-              className="NavLink"
-              activeClassName="NavLink-active"
-            >
+        <ul className="nav nav-pills nav-justified ">
+          <li className="nav-item">
+            <NavLink exact to="/" className="nav-link" activeClassName="active">
               Home
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/movies"
-              className="NavLink"
-              activeClassName="NavLink-active"
-            >
+          <li className="nav-item">
+            <NavLink to="/movies" className="nav-link" activeClassName="active">
               Movies
             </NavLink>
           </li>

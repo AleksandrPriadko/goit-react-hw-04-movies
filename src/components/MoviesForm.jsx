@@ -26,14 +26,17 @@ class MoviesForm extends Component {
     const { name } = this.state;
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
+        <form className="d-flex d-grid gap-3" onSubmit={this.handleSubmit}>
           <input
+            className="form-control me-2"
             type="text"
             name="name"
             value={name}
             onChange={this.handleChange}
           />
-          <button type="submit">Search</button>
+          <button className="btn btn-outline-success" type="submit">
+            Search
+          </button>
         </form>
       </>
     );

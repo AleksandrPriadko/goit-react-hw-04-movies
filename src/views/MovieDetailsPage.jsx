@@ -31,12 +31,16 @@ class MovieDetailsPage extends Component {
   handleGoBack = () => {
     const { location, history } = this.props;
     console.log(location);
+    // this.props.history.push({
+    //   pathname: this.props.location.pathname,
+    //   search: `?query=${query}`,
+    // });
 
     history.push(location.state.from);
 
-    const queryParams = queryString.parse(location.search);
-    history.push(queryParams);
-    console.log(queryParams);
+    //const queryParams = queryString.parse(location.state.from.search);
+    // history.push(queryParams);
+    // console.log(queryParams);
   };
 
   render() {

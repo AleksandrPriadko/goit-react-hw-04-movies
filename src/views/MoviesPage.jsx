@@ -24,8 +24,6 @@ class MoviesPage extends Component {
   };
 
   handleRequest = (query) => {
-    //const { query } = this.state;
-    console.log(query);
     const API_KEY = "4ecc398414630285446ccb200129c746";
     const URL = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=en-US&page=1&include_adult=false`;
     axios.get(URL).then(({ data }) => {
@@ -35,13 +33,13 @@ class MoviesPage extends Component {
   };
 
   render() {
-    const { results, query } = this.state;
+    const { results } = this.state;
     const { location } = this.props;
     console.log(this.props.location);
     //this.handleRequest();
     return (
       <>
-        <MoviesForm onSubmit={this.formSubmitHandler} query={query} />
+        <MoviesForm onSubmit={this.formSubmitHandler} />
         <ul>
           {results.map(({ id, title }) => (
             <li key={id}>
