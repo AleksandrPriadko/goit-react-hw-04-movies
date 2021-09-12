@@ -1,32 +1,46 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MoviesForm from "../components/MoviesForm";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-export default function MoviesPage({ location, history, match }) {
+export default function MoviesPage() {
+  const location = useLocation();
+  const { pathname, state } = location;
+  console.log(pathname);
+  const { push } = useHistory();
+
   const [querys, setQuerys] = useState("");
   const [results, setResults] = useState([]);
-
+  // console.log(querys);
   const formSubmitHandler = (query) => {
     setQuerys(query);
-    onMoviesSearch();
-    handleRequest();
+    //console.log(query);
+
+    onMoviesSearch(query);
   };
 
-  const onMoviesSearch = () => {
-    history.push({
-      pathname: location.pathname,
-      search: `?query=${querys}`,
+  const onMoviesSearch = (query) => {
+    console.log(querys);
+    push({
+      ...location,
+      search: `?query=${query}`,
     });
   };
 
   const handleRequest = () => {
     const API_KEY = "4ecc398414630285446ccb200129c746";
     const URL = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${querys}&language=en-US&page=1&include_adult=false`;
-    axios.get(URL).then(({ data }) => {
+
+    return axios.get(URL).then(({ data }) => {
       setResults(data.results);
     });
   };
+  useEffect(() => {
+    if (!querys) return;
+    handleRequest();
+  }, [querys]);
 
   return (
     <>
@@ -34,14 +48,7 @@ export default function MoviesPage({ location, history, match }) {
       <ul>
         {results.map(({ id, title }) => (
           <li key={id}>
-            <Link
-              to={{
-                pathname: `${match.url}/${id}`,
-                state: {
-                  from: location,
-                },
-              }}
-            >
+            <Link to={{ pathname: `${pathname}/${id}`, state: { location } }}>
               {title}
             </Link>
           </li>

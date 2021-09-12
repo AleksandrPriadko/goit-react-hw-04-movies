@@ -6,17 +6,20 @@ import {
   Switch,
   useParams,
   useRouteMatch,
+  useLocation,
 } from "react-router-dom";
 import CastDetails from "../components/CastDetails";
 import ReviewsDetails from "../components/ReviewsDetails";
-import queryString from "query-string";
+//import queryString from "query-string";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-export default function MovieDetailsPage(params) {
+export default function MovieDetailsPage() {
+  const location = useLocation();
+  const { pathname, state } = location;
+  const { push } = useHistory();
   const { movieId } = useParams();
-
   const { url } = useRouteMatch();
-  const match = useRouteMatch();
-  console.log(match);
+
   const [poster, setPoster] = useState(null);
   const [title, setTitle] = useState(null);
   const [score, setScore] = useState(null);
@@ -24,7 +27,7 @@ export default function MovieDetailsPage(params) {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    //const { movieId } = this.props.match.params;
+    console.log(location);
     const API_KEY = "4ecc398414630285446ccb200129c746";
     const URL = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`;
     axios.get(URL).then(({ data }) => {
@@ -35,11 +38,35 @@ export default function MovieDetailsPage(params) {
       setScore(data.vote_average);
     });
   }, []);
+
+  const handleGoBack = () => {
+    console.log(location);
+    // console.log(state);
+    push({
+      pathname: location.state.location.pathname,
+      search: location.state.location.search,
+    });
+    // const { location, history } = this.props;
+    // console.log(location);
+    // this.props.history.push({
+    //   pathname: this.props.location.pathname,
+    //   search: `?query=${query}`,
+    // });
+
+    // history.push(location.state.from);
+
+    // const queryParams = queryString.parse(location.state.from.search);
+    // history.push(queryParams);
+    // console.log(queryParams);
+  };
+
   const percent = Math.round((score * 100) / 10);
 
   return (
     <div>
-      <button type="button">Go back</button>
+      <button type="button" onClick={handleGoBack}>
+        Go back
+      </button>
       <div>
         <img className="pictures" src={poster} alt={title} />
         <div>
@@ -61,16 +88,15 @@ export default function MovieDetailsPage(params) {
           </li>
         </ul>
       </div>
-      <div>
-        <Switch>
-          <Route path="/movies/:movieId/cast">
-            <CastDetails />
-          </Route>
-          <Route path="/movies/:movieId/reviews">
-            <ReviewsDetails />
-          </Route>
-        </Switch>
-      </div>
+
+      <Switch>
+        <Route path="/movies/:movieId/cast">
+          <CastDetails />
+        </Route>
+        <Route path="/movies/:movieId/reviews">
+          <ReviewsDetails />
+        </Route>
+      </Switch>
     </div>
   );
 }
