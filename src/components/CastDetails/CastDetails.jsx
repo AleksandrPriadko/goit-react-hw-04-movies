@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import "./castDetails.css";
 
 export default function CastDetails() {
   const { movieId } = useParams();
@@ -22,9 +23,10 @@ export default function CastDetails() {
     <>
       <ul>
         {cast.map(({ id, name, profile_path }) => (
-          <li key={id}>
+          <li className="itemCast" key={id}>
             <div>
               <img
+                className="imgCast"
                 src={`https://image.tmdb.org/t/p/original${profile_path}`}
                 alt={name}
               />

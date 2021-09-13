@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import axios from "axios";
 import {
   NavLink,
@@ -7,19 +7,27 @@ import {
   useParams,
   useRouteMatch,
   useLocation,
+  useHistory,
 } from "react-router-dom";
-import CastDetails from "../components/CastDetails";
-import ReviewsDetails from "../components/ReviewsDetails";
-//import queryString from "query-string";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import "./movieDetails.css";
+const CastDetails = lazy(() =>
+  import(
+    "../../components/CastDetails/CastDetails" /* webpackChunkName: "CastDetails-views" */
+  )
+);
+const ReviewsDetails = lazy(() =>
+  import(
+    "../../components/ReviewsDetails" /* webpackChunkName: "ReviewsDetails-views" */
+  )
+);
 
 export default function MovieDetailsPage() {
   const location = useLocation();
-  const { pathname, state } = location;
+  const { state } = location;
   const { push } = useHistory();
   const { movieId } = useParams();
   const { url } = useRouteMatch();
-
+  console.log("localState", state);
   const [poster, setPoster] = useState(null);
   const [title, setTitle] = useState(null);
   const [score, setScore] = useState(null);
@@ -40,24 +48,13 @@ export default function MovieDetailsPage() {
   }, []);
 
   const handleGoBack = () => {
-    console.log(location);
+    console.log("goBack click", location.state.from);
     // console.log(state);
     push({
-      pathname: location.state.location.pathname,
-      search: location.state.location.search,
+      pathname: state.from.pathname,
+      state: state.querys,
     });
-    // const { location, history } = this.props;
-    // console.log(location);
-    // this.props.history.push({
-    //   pathname: this.props.location.pathname,
-    //   search: `?query=${query}`,
-    // });
-
-    // history.push(location.state.from);
-
-    // const queryParams = queryString.parse(location.state.from.search);
-    // history.push(queryParams);
-    // console.log(queryParams);
+    //push(location.state.querys);
   };
 
   const percent = Math.round((score * 100) / 10);
@@ -65,9 +62,9 @@ export default function MovieDetailsPage() {
   return (
     <div>
       <button type="button" onClick={handleGoBack}>
-        Go back
+        {state?.label ?? "Go back"}
       </button>
-      <div>
+      <div className="container_details">
         <img className="pictures" src={poster} alt={title} />
         <div>
           <h1>{title}</h1>
@@ -88,15 +85,16 @@ export default function MovieDetailsPage() {
           </li>
         </ul>
       </div>
-
-      <Switch>
-        <Route path="/movies/:movieId/cast">
-          <CastDetails />
-        </Route>
-        <Route path="/movies/:movieId/reviews">
-          <ReviewsDetails />
-        </Route>
-      </Switch>
+      <Suspense fallback={<h1>Loading...</h1>}>
+        <Switch>
+          <Route path="/movies/:movieId/cast">
+            <CastDetails />
+          </Route>
+          <Route path="/movies/:movieId/reviews">
+            <ReviewsDetails />
+          </Route>
+        </Switch>
+      </Suspense>
     </div>
   );
 }

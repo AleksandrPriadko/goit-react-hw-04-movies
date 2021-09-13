@@ -1,0 +1,11 @@
+.itemCast {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.imgCast {
+    width: 240px;
+}
