@@ -19,7 +19,7 @@ export default function MoviesPage() {
   useEffect(() => {
     push({
       ...location,
-      search: `?query=${querys}`,
+      search: `query=${querys}`,
     });
   }, [querys]);
 
