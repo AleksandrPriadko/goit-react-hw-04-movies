@@ -1,5 +1,4 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
-import axios from "axios";
 import {
   NavLink,
   Route,
@@ -9,7 +8,9 @@ import {
   useLocation,
   useHistory,
 } from "react-router-dom";
+import { getMoviesDetailsApi } from "../../js/moviesApi";
 import "./movieDetails.css";
+
 const CastDetails = lazy(() =>
   import(
     "../../components/CastDetails/CastDetails" /* webpackChunkName: "CastDetails-views" */
@@ -35,16 +36,15 @@ export default function MovieDetailsPage() {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    console.log(location);
-    const API_KEY = "4ecc398414630285446ccb200129c746";
-    const URL = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`;
-    axios.get(URL).then(({ data }) => {
-      setPoster(`https://image.tmdb.org/t/p/original${data.poster_path}`);
-      setTitle(data.title);
-      setOverview(data.overview);
-      setGenres(data.genres.map((genre) => genre.name));
-      setScore(data.vote_average);
-    });
+    getMoviesDetailsApi(movieId)
+      .then(({ data }) => {
+        setPoster(`https://image.tmdb.org/t/p/original${data.poster_path}`);
+        setTitle(data.title);
+        setOverview(data.overview);
+        setGenres(data.genres.map((genre) => genre.name));
+        setScore(data.vote_average);
+      })
+      .catch((error) => `Error, ${error.message}`);
   }, []);
 
   const handleGoBack = () => {

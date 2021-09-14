@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useHistory, useLocation } from "react-router-dom";
+import { getMovieReviewsApi } from "../js/moviesApi";
 
 export default function ReviewsDetails() {
   const location = useLocation();
@@ -12,12 +12,8 @@ export default function ReviewsDetails() {
 
   useEffect(() => {
     push({ ...location, state });
-    const API_KEY = "4ecc398414630285446ccb200129c746";
-    const URL = `https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`;
-    axios
-      .get(URL)
-      .then(({ data }) => {
-        const { results } = data;
+    getMovieReviewsApi(movieId)
+      .then(({ results }) => {
         setReviews(results);
         setContent(
           results.map(({ content }) => {

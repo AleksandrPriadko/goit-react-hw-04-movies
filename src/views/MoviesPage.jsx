@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
-import axios from "axios";
 import MoviesForm from "../components/MoviesForm";
+import { searchMoviesApi } from "../js/moviesApi";
 
 export default function MoviesPage() {
   const location = useLocation();
@@ -14,28 +13,28 @@ export default function MoviesPage() {
 
   const formSubmitHandler = (query) => {
     setQuerys(query);
+    setResults([]);
   };
 
-  useEffect(() => {
-    push({
-      ...location,
-      search: `query=${querys}`,
-    });
-  }, [querys]);
-
   const handleRequest = () => {
-    const API_KEY = "4ecc398414630285446ccb200129c746";
-    const URL = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${querys}&language=en-US&page=1&include_adult=false`;
-
-    return axios.get(URL).then(({ data }) => {
-      setResults(data.results);
-    });
+    searchMoviesApi(querys)
+      .then(({ results }) => {
+        return setResults(results);
+      })
+      .catch((error) => `Error, ${error.message}`);
   };
 
   useEffect(() => {
     if (!querys) return;
     handleRequest();
   }, [querys]);
+
+  useEffect(() => {
+    push({
+      ...location,
+      search: querys ? `?query=${querys}` : "",
+    });
+  }, [results]);
 
   return (
     <>

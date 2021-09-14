@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useLocation, useHistory } from "react-router-dom";
+import { getMovieCreditsApi } from "../../js/moviesApi";
 import "./castDetails.css";
 
 export default function CastDetails() {
@@ -12,15 +12,9 @@ export default function CastDetails() {
 
   useEffect(() => {
     push({ ...location, state });
-    const API_KEY = "4ecc398414630285446ccb200129c746";
-    axios
-      .get(
-        `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`
-      )
-      .then(({ data }) => {
-        const { cast } = data;
-        setCast(cast);
-      });
+    getMovieCreditsApi(movieId)
+      .then(({ cast }) => setCast(cast))
+      .catch((error) => `Error, ${error.message}`);
   }, []);
 
   return (

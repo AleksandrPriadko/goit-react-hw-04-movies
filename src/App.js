@@ -1,4 +1,4 @@
-import { Route, Switch, NavLink } from "react-router-dom";
+import { Route, Switch, NavLink, Redirect } from "react-router-dom";
 import React, { lazy, Suspense } from "react";
 
 import "./App.css";
@@ -12,9 +12,6 @@ const MovieDetailsPage = lazy(() =>
   import(
     "./views/MovieDetailsPage/MovieDetailsPage" /* webpackChunkName: "MovieDetails-views" */
   )
-);
-const NotFoundView = lazy(() =>
-  import("./components/NotFoundView" /* webpackChunkName: "NotFound-views" */)
 );
 
 export default function App() {
@@ -43,43 +40,10 @@ export default function App() {
           <Route path="/movies/:movieId">
             <MovieDetailsPage />
           </Route>
-          <Route>
-            <NotFoundView />
-          </Route>
+
+          <Redirect to="/" />
         </Switch>
       </Suspense>
     </>
   );
 }
-
-// class App extends Component {
-//   state = {};
-
-//   render() {
-//     return (
-//       <>
-//         <ul className="nav nav-pills nav-justified ">
-//           <li className="nav-item">
-//             <NavLink exact to="/" className="nav-link" activeClassName="active">
-//               Home
-//             </NavLink>
-//           </li>
-//           <li className="nav-item">
-//             <NavLink to="/movies" className="nav-link" activeClassName="active">
-//               Movies
-//             </NavLink>
-//           </li>
-//         </ul>
-
-//         <Switch>
-//           <Route path="/" exact component={HomePage} />
-//           <Route exact path="/movies" component={MoviesPage} />
-//           <Route path="/movies/:movieId" component={MovieDetailsPage} />
-//           <Route component={NotFoundView} />
-//         </Switch>
-//       </>
-//     );
-//   }
-// }
-
-// export default App;
