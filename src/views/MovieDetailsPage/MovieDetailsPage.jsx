@@ -8,7 +8,7 @@ import {
   useLocation,
   useHistory,
 } from "react-router-dom";
-import { getMoviesDetailsApi } from "../../js/moviesApi";
+import { getMoviesDetailsApi } from "../../Api/moviesApi";
 import "./movieDetails.css";
 
 const CastDetails = lazy(() =>

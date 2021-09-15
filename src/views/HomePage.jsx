@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getTrendingApi } from "../js/moviesApi";
+import { getTrendingApi } from "../Api/moviesApi";
 import { Link, useLocation } from "react-router-dom";
 
 export default function HomePage() {

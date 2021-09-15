@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
-import { getMovieReviewsApi } from "../js/moviesApi";
+import { getMovieReviewsApi } from "../Api/moviesApi";
 
 export default function ReviewsDetails() {
   const location = useLocation();

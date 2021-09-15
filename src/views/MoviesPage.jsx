@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import MoviesForm from "../components/MoviesForm";
-import { searchMoviesApi } from "../js/moviesApi";
+import { searchMoviesApi } from "../Api/moviesApi";
 
 export default function MoviesPage() {
   const location = useLocation();
